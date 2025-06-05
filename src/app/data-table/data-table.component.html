@@ -1,0 +1,74 @@
+<div class="data-table-container">
+    <!-- Main Grid Table -->
+    <div class="grid-actions">
+      <button class="export-btn" (click)="exportToExcel()">Export to Excel</button>
+      <button class="add-group-btn" (click)="addNewGroup()">Add Group</button>
+    </div>
+    
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>first_name</th>
+          <th>email</th>
+          <th>nv</th>
+          <th>Aggregated Ratio</th>
+          <th>Aggregated Percentage</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let group of groups; let i = index">
+        <tr class="group-header">
+          <td>{{group.name}}</td>
+          <td>{{group.name}}</td>
+          <td></td>
+          <td></td>
+          <td>{{group.aggregatedRatio}}</td>
+          <td>{{group.aggregatedPercentage | number:'1.2-2'}}%</td>
+          <td>
+            <button class="add-row-btn" (click)="openSelectionModal(i)">+</button>
+          </td>
+        </tr>
+        <tr *ngFor="let row of group.rows">
+          <td>{{row.id}}</td>
+          <td>{{row.first_name}}</td>
+          <td>{{row.email}}</td>
+          <td>{{row.nv}}</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <!-- Selection Modal -->
+    <div class="selection-modal" *ngIf="showSelectionModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Select</h2>
+          <input 
+            type="text" 
+            [(ngModel)]="searchText" 
+            (input)="searchRows()" 
+            placeholder="Search Text" 
+            class="search-input"
+          >
+        </div>
+        
+        <div class="rows-container">
+          <div 
+            *ngFor="let row of filteredRows" 
+            class="selectable-row" 
+            (click)="selectRow(row)"
+          >
+            {{ row.id }} | {{ row.first_name }} | {{ row.email }} | {{ row.nv }}
+          </div>
+        </div>
+        
+        <div class="modal-footer">
+          <button class="cancel-btn" (click)="cancelSelection()">Cancel</button>
+          <button class="select-btn" (click)="showSelectionModal = false">Select</button>
+        </div>
+      </div>
+    </div>
+  </div>
